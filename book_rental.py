@@ -2,8 +2,6 @@ print("=== Book Rental System ===")
 print("Enter membership type: student, regular, or premium")
 print("Type 'done' when finished selecting books")
 subtotal = 0
-#bulk = 2.50
-#total = 0
 while True:
     i = input("\nEnter membership type: ")
     if i == "done":
