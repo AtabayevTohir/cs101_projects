@@ -1,19 +1,20 @@
 def get_daily_temp_swing(weather_day_tuple) :
     swing = weather_day_tuple[1] - weather_day_tuple[2]
-    return weather_day_tuple[0],swing
+    return swing
 
 def find_day_with_largest_swing(weather_data):
     largest_swing = 0
     largest_swing_date = None
     for day in weather_data:
-        date,swing = get_daily_temp_swing(day)
+        date = day[0]
+        swing = get_daily_temp_swing(day)
         if largest_swing < swing:
             largest_swing = swing
             largest_swing_date = date
     return largest_swing_date
 
 def count_days_above_precip(weather_data, threshold):
-    num_days = 0
+    num_days = -1
     for day in weather_data:
         if threshold< day[3]:
             num_days += 1
