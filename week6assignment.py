@@ -46,6 +46,7 @@ def get_monthly_summary(weather_data):
     for i in range(len(months)):
         avg_max = sum_max[i] / count_days[i]
         result.append((months[i], avg_max, total_precip[i]))
+    result.sort()
 
     return result
 
