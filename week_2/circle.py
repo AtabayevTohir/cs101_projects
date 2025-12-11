@@ -1,0 +1,6 @@
+radius = float(input("enter the radius: "))
+pi = float(3.14159)
+area = float(pi * (radius ** 2))
+circumference = float(2 * pi * radius)
+print(f"Area of the circle is {area:.2f}")
+print(f"Circumference of the circle is {circumference:.2f}")

@@ -1,0 +1,6 @@
+temp = float(input("Enter temperature in celsius: " ))
+fahrenheit =float( (temp * (9/5)) + 32)
+kelvin =float( temp + 273.15)
+print(f"Temperature in Celsius: {temp:.2f}")
+print(f"Temperature in Fahrenheit: {fahrenheit:.2f}" )
+print(f"Temperature in Kelvin {kelvin:.2f}")
