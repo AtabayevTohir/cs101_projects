@@ -16,9 +16,9 @@ def craft_batch(inventory, recipes, to_craft_list):
         try:
             result.append(craft_item(inventory, recipes, item_name))
         except KeyError:
-            result.append("Recipe unknown")
+            print("Recipe unknown")
         except ValueError:
-            result.append("Missing ingredients")
+            print("Missing ingredients")
     
     return result
 
