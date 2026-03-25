@@ -1,71 +1,55 @@
-def get_daily_temp_swing(weather_day_tuple) :
-    swing = weather_day_tuple[1] - weather_day_tuple[2]
-    return swing
+def calculate_total(invoice_text):
+    lines = invoice_text.split('\n')
 
-def find_day_with_largest_swing(weather_data):
-    largest_swing = 0
-    largest_swing_date = None
-    for day in weather_data:
-        date = day[0]
-        swing = get_daily_temp_swing(day)
-        if largest_swing < swing:
-            largest_swing = swing
-            largest_swing_date = date
-    return largest_swing_date
+    subtotal = 0
+    discount = 0
+    tax_rate = 0
 
-def count_days_above_precip(weather_data, threshold):
-    num_days = -1
-    for day in weather_data:
-        if threshold< day[3]:
-            num_days += 1
-    return num_days
+    for line in lines:
 
-def get_monthly_summary(weather_data):
-    months = []        
-    sum_max = []       
-    total_precip = []  
-    count_days = []    
+        # ITEM LINE: detect using '@' and 'x'
+        if '@' in line and 'x' in line:
+            parts = line.split('@')
+            right = parts[1]  # just " 1 x $1250.00"
 
-    for day in weather_data:
-        date = day[0]
-        max_t = day[1]
-        precip = day[3]
-        month = date[:7]
+            qty_part, price_part = right.split('x')
 
-        if month in months:
-            i = months.index(month)
-            sum_max[i] += max_t
-            total_precip[i] += precip
-            count_days[i] += 1
-        else:
-            months.append(month)
-            sum_max.append(max_t)
-            total_precip.append(precip)
-            count_days.append(1)
+            qty = float(qty_part)
+            price = float(price_part.replace('$',''))
 
-    result = []
-    for i in range(len(months)):
-        avg_max = sum_max[i] / count_days[i]
-        result.append((months[i], avg_max, total_precip[i]))
-    result.sort()
+            subtotal += qty * price
 
-    return result
+        # TAX LINE: only check first 3 letters
+        elif line[:3] == "TAX":
+            percent = line.split(':')[1].replace('%','')
+            tax_rate = float(percent) / 100
 
-def analyze_weather(weather_data):
-    day_with_largestswing = find_day_with_largest_swing(weather_data)
-    heavy_rain_days = count_days_above_precip(weather_data, 10.0)
-    monthly_summary = get_monthly_summary(weather_data)
+        # DISCOUNT LINE: check first 8 letters
+        elif line[:8] == "DISCOUNT":
+            amount = line.split(':')[1].replace('$','')
+            discount = float(amount)
 
-    return (day_with_largestswing, heavy_rain_days, monthly_summary)
+    after_discount = subtotal - discount
+    total = after_discount * (1 + tax_rate)
 
-weather_data = [
-    ('2023-10-01', 22, 10, 5.5),
-    ('2023-10-02', 25, 11, 0.0),
-    ('2023-10-03', 24, 15, 12.0),
-    ('2023-11-01', 18, 7, 2.5),
-    ('2023-11-02', 15, 6, 15.5),
-    ('2023-11-03', 16, 9, 8.0)
-]
+    return "$" + format(total, ".2f")
 
-print (analyze_weather(weather_data))
+# Test Case 1: Standard invoice with items, tax, and discount
+invoice1 = """Laptop @ 1 x $1250.00
+Mouse @ 2 x $25.50
+TAX: 8%
+DISCOUNT: $50.00"""
+print(calculate_total(invoice1))
 
+# Test Case 2: Invoice with no discount
+invoice2 = """Book @ 3 x $15.00
+Pen @ 10 x $1.50
+TAX: 5%"""
+print(calculate_total(invoice2))
+
+# Test Case 3: Invoice with zero tax and a discount
+invoice3 = """Monitor @ 1 x $300.00
+Keyboard @ 1 x $75.00
+DISCOUNT: $25.00
+TAX: 0%"""
+print(calculate_total(invoice3))

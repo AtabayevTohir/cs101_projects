@@ -30,8 +30,6 @@ initial = ["BOX-A1", "BOX-B2", "BOX-C3", "BOX-D4"]
 new = ["BOX-E5", "BOX-F6"]
 dispatch_count = 2
 recall_id = "BOX-D4"
-
-# When you call your function, you can receive the two returned lists like this:
 final_state, dispatched = manage_shipments(initial, new, dispatch_count, recall_id)
 print('Test Case 1 Results:')
 print(f'final_state: {final_state}')
@@ -43,12 +41,3 @@ print(f'\nOriginal list unchanged: {initial}')
 
 
 
-
-
-
-
-
-
-# a = ["BOX-A1", "BOX-B2", "BOX-C3", "BOX-D4"]
-# b = 35
-# print(dispatch_shipments(a,b))
