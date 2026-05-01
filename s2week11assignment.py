@@ -12,7 +12,7 @@ class Flight:
     _status: str = field(init=False, default="SCHEDULED")
     
     def __post_init__(self):
-        if self.distance < 0:
+        if self.distance <= 0:
             raise FlightError(f"Distance for flight {self.code} is invalid")
         
     @property
@@ -83,8 +83,3 @@ print()
 
 with gate_session("Evening Departures") as flights:
     flights.append(Flight("DD400", "London", -100))
-
-    
-
- 
-    
